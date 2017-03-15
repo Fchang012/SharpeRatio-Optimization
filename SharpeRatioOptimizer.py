@@ -37,10 +37,32 @@ class SharpeRatioOptimizer(object):
         self.sr = k*sr
         
         return self.cr, self.apr, self.sdpr, self.sr, self.port_val
+    
+    # Optimize on CR
+    def optimize_cr(self, prices):
+        # Initial allocation
+        allocs = np.empty(len(prices.columns))
+        allocs.fill(1.0/len(prices.columns))
+        
+        # constraints
+        # Sum of weights = 1
+        cons = ({'type': 'eq', 'fun' : lambda x: np.sum(x) - 1})
+    
+        # Bounds x between 0 and 1
+        bnds = tuple((0,1) for x in range(len(allocs)))
+        
+        # Find Max Sharpe ratio
+        opts = sco.minimize(self.max_cr, allocs, args=(prices,), method='SLSQP', 
+                        constraints=cons, bounds=bnds)
+        
+        #Optimized allocations
+        optAllocs = np.asarray(opts.x)
+        
+        return optAllocs
         
         
     # Optimize on Sharpe
-    def optimize(self, prices):
+    def optimize_sharpe(self, prices):
         # Initial allocation
         allocs = np.empty(len(prices.columns))
         allocs.fill(1.0/len(prices.columns))
@@ -64,6 +86,9 @@ class SharpeRatioOptimizer(object):
 
     def normalize_data(self, df):
         return df / df.ix[0, :]
+    
+    def max_cr(self, allocs, prices):
+        return -self.getPortStats(allocs, prices,sf=12)[0]
         
     def max_sharpe(self, allocs, prices):
         return -self.getPortStats(allocs, prices, sf=12)[3]

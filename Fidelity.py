@@ -46,17 +46,24 @@ if __name__=="__main__":
     
     naive = naivePortfolio.port_val[-1]
     
-    #Value With Optimization
-    optPort = naivePortfolio.optimize(prices)
-    naivePortfolio.getPortStats(optPort, prices, sf=12, sv=10000)
+    #Value With Optimization for CR
+    optPortCR = naivePortfolio.optimize_cr(prices)
+    naivePortfolio.getPortStats(optPortCR, prices, sf=12, sv=10000)
 
     print 'Cumulative Return: ', naivePortfolio.cr, '\n'
     print 'Avg Period Return: ', naivePortfolio.apr, '\n'
     print 'STD Period Return: ', naivePortfolio.sdpr, '\n'
     print 'Port Value: ', naivePortfolio.port_val, '\n'  
     
-    optimal = naivePortfolio.port_val[-1]
+    optimalCR = naivePortfolio.port_val[-1]
     
-    print 'Diff: ', optimal-naive, '\n'
+    #Value With Optimization for Sharpe
+    optPortSharpe = naivePortfolio.optimize_sharpe(prices)
+    naivePortfolio.getPortStats(optPortSharpe, prices, sf=12, sv=10000)
+
+    print 'Cumulative Return: ', naivePortfolio.cr, '\n'
+    print 'Avg Period Return: ', naivePortfolio.apr, '\n'
+    print 'STD Period Return: ', naivePortfolio.sdpr, '\n'
+    print 'Port Value: ', naivePortfolio.port_val, '\n'  
     
-    print optPort
+    optimalSharpe = naivePortfolio.port_val[-1]
