@@ -54,6 +54,7 @@ if __name__=="__main__":
     print 'Cumulative Return: ', naivePortfolio.cr, '\n'
     print 'Avg Period Return: ', naivePortfolio.apr, '\n'
     print 'STD Period Return: ', naivePortfolio.sdpr, '\n'
+    print 'Sharpe Ratio: ', naivePortfolio.sr, '\n'
     print 'Port Value: ', naivePortfolio.port_val, '\n'
     
     naive = naivePortfolio.port_val[-1]
@@ -66,6 +67,7 @@ if __name__=="__main__":
     print 'Cumulative Return: ', naivePortfolio.cr, '\n'
     print 'Avg Period Return: ', naivePortfolio.apr, '\n'
     print 'STD Period Return: ', naivePortfolio.sdpr, '\n'
+    print 'Sharpe Ratio: ', naivePortfolio.sr, '\n'
     print 'Port Value: ', naivePortfolio.port_val, '\n'
     print np.round(optPortCR, decimals=2)
     print '\n'
@@ -80,6 +82,7 @@ if __name__=="__main__":
     print 'Cumulative Return: ', naivePortfolio.cr, '\n'
     print 'Avg Period Return: ', naivePortfolio.apr, '\n'
     print 'STD Period Return: ', naivePortfolio.sdpr, '\n'
+    print 'Sharpe Ratio: ', naivePortfolio.sr, '\n'
     print 'Port Value: ', naivePortfolio.port_val, '\n'
     print np.round(optPortSharpe, decimals=2)
     print '\n'
