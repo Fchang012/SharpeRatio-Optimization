@@ -19,26 +19,38 @@ if __name__=="__main__":
     dates = pd.date_range(sd,ed)
     
     #Symbols    
-    symbols = ['NON40OJJ4120317',
-               'NON40OJJ5120317',
-               'NON40OJJ6120317',
-               'NON40OJJ8120317',
-               'NON40OJPF120317',
-               'NON40OJPG120317',
-               'NON40OXLT120317',
-               'OJPH120317']
+    symbols = ['NON40OJJ4',
+               'NON40OJJ5',
+               'NON40OJJ6',
+               'NON40OJJ8',
+               'NON40OJPF',
+               'NON40OJPG',
+               'NON40OXLT',
+               'OJPH'
+               ]
                
     prices = get_data(symbols, dates)
     prices = prices.dropna()
     
     #Initial Allocation
-    allocs = np.empty(len(symbols), float)
-    allocs.fill(1.0/len(symbols))
+#    allocs = np.empty(len(symbols), float)
+#    allocs.fill(1.0/len(symbols))
+    
+    allocs = np.array([0.22,
+                       0.11,
+                       0.1,
+                       0.1,
+                       0.13,
+                       0.2,
+                       0.12,
+                       0.02
+                       ])
     
     #Value of Portfolio with no optimization
     naivePortfolio = SRO.SharpeRatioOptimizer()
     naivePortfolio.getPortStats(allocs, prices, sf=12, sv=10000)
     
+    print '---No Opt---\n'
     print 'Cumulative Return: ', naivePortfolio.cr, '\n'
     print 'Avg Period Return: ', naivePortfolio.apr, '\n'
     print 'STD Period Return: ', naivePortfolio.sdpr, '\n'
@@ -50,10 +62,13 @@ if __name__=="__main__":
     optPortCR = naivePortfolio.optimize_cr(prices)
     naivePortfolio.getPortStats(optPortCR, prices, sf=12, sv=10000)
 
+    print '---CR Opt---\n'
     print 'Cumulative Return: ', naivePortfolio.cr, '\n'
     print 'Avg Period Return: ', naivePortfolio.apr, '\n'
     print 'STD Period Return: ', naivePortfolio.sdpr, '\n'
-    print 'Port Value: ', naivePortfolio.port_val, '\n'  
+    print 'Port Value: ', naivePortfolio.port_val, '\n'
+    print np.round(optPortCR, decimals=2)
+    print '\n'
     
     optimalCR = naivePortfolio.port_val[-1]
     
@@ -61,9 +76,12 @@ if __name__=="__main__":
     optPortSharpe = naivePortfolio.optimize_sharpe(prices)
     naivePortfolio.getPortStats(optPortSharpe, prices, sf=12, sv=10000)
 
+    print '---Sharpe Opt---\n'
     print 'Cumulative Return: ', naivePortfolio.cr, '\n'
     print 'Avg Period Return: ', naivePortfolio.apr, '\n'
     print 'STD Period Return: ', naivePortfolio.sdpr, '\n'
-    print 'Port Value: ', naivePortfolio.port_val, '\n'  
+    print 'Port Value: ', naivePortfolio.port_val, '\n'
+    print np.round(optPortSharpe, decimals=2)
+    print '\n'
     
     optimalSharpe = naivePortfolio.port_val[-1]
