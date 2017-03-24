@@ -39,7 +39,7 @@ class SharpeRatioOptimizer(object):
         return self.cr, self.apr, self.sdpr, self.sr, self.port_val
     
     # Optimize on CR
-    def optimize_cr(self, prices):
+    def optimize_cr(self, prices, sf):
         # Initial allocation
         allocs = np.empty(len(prices.columns))
         allocs.fill(1.0/len(prices.columns))
@@ -52,7 +52,7 @@ class SharpeRatioOptimizer(object):
         bnds = tuple((0,1) for x in range(len(allocs)))
         
         # Find Max Sharpe ratio
-        opts = sco.minimize(self.max_cr, allocs, args=(prices,), method='SLSQP', 
+        opts = sco.minimize(self.max_cr, allocs, args=(prices, sf), method='SLSQP', 
                         constraints=cons, bounds=bnds)
         
         #Optimized allocations
@@ -62,7 +62,7 @@ class SharpeRatioOptimizer(object):
         
         
     # Optimize on Sharpe
-    def optimize_sharpe(self, prices):
+    def optimize_sharpe(self, prices, sf):
         # Initial allocation
         allocs = np.empty(len(prices.columns))
         allocs.fill(1.0/len(prices.columns))
@@ -75,7 +75,7 @@ class SharpeRatioOptimizer(object):
         bnds = tuple((0,1) for x in range(len(allocs)))
         
         # Find Max Sharpe ratio
-        opts = sco.minimize(self.max_sharpe, allocs, args=(prices,), method='SLSQP', 
+        opts = sco.minimize(self.max_sharpe, allocs, args=(prices,sf), method='SLSQP', 
                         constraints=cons, bounds=bnds)
         
         #Optimized allocations
@@ -87,8 +87,8 @@ class SharpeRatioOptimizer(object):
     def normalize_data(self, df):
         return df / df.ix[0, :]
     
-    def max_cr(self, allocs, prices):
-        return -self.getPortStats(allocs, prices,sf=12)[0]
+    def max_cr(self, allocs, prices, sf):
+        return -self.getPortStats(allocs, prices, sf)[0]
         
-    def max_sharpe(self, allocs, prices):
-        return -self.getPortStats(allocs, prices, sf=12)[3]
+    def max_sharpe(self, allocs, prices, sf ):
+        return -self.getPortStats(allocs, prices, sf)[3]

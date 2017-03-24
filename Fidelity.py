@@ -60,7 +60,7 @@ if __name__=="__main__":
     naive = naivePortfolio.port_val[-1]
     
     #Value With Optimization for CR
-    optPortCR = naivePortfolio.optimize_cr(prices)
+    optPortCR = naivePortfolio.optimize_cr(prices, sf=12)
     naivePortfolio.getPortStats(optPortCR, prices, sf=12, sv=10000)
 
     print '---CR Opt---\n'
@@ -75,7 +75,7 @@ if __name__=="__main__":
     optimalCR = naivePortfolio.port_val[-1]
     
     #Value With Optimization for Sharpe
-    optPortSharpe = naivePortfolio.optimize_sharpe(prices)
+    optPortSharpe = naivePortfolio.optimize_sharpe(prices, sf=12)
     naivePortfolio.getPortStats(optPortSharpe, prices, sf=12, sv=10000)
 
     print '---Sharpe Opt---\n'
