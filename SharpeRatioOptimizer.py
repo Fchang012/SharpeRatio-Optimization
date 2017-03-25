@@ -17,7 +17,7 @@ class SharpeRatioOptimizer(object):
     
     
     # Portfolio Stats
-    def getPortStats(self, allocs, prices, sf=252, rfr=0.0, sv=1):
+    def getPortStats(self, allocs, prices, sf, rfr=0.0, sv=1):
         normed = self.normalize_data(prices)
         allocation = normed * allocs
         position_vals = allocation * sv

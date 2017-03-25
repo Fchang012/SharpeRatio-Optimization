@@ -11,7 +11,7 @@ import pandas as pd
 def symbol_to_path(symbol, base_dir=os.path.join("Raw_CSV")):
     return os.path.join(base_dir, "{}.csv".format(str(symbol)))
 
-def get_data(symbols, dates, colname = 'Close'):
+def get_data(symbols, dates, colname = 'Adjusted'):
     """Read stock data for given symbols from CSV files."""
     
     df = pd.DataFrame(index=dates)
