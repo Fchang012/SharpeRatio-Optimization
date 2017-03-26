@@ -12,10 +12,15 @@ import numpy as np
 import SharpeRatioOptimizer as SRO
 from read_CSV import get_data
 
+def test_split(df, percent=0.6):
+    train = df.ix[0:int(np.round(prices.shape[0]*percent)), :]
+    test = df.ix[int(np.round(prices.shape[0]*percent)): , :]
+    return train, test
+
 if __name__=="__main__":
     
     #Setting Dates
-    sd=dt.datetime(2005,1,1)
+    sd=dt.datetime(2008,1,1)
     ed=dt.datetime(2017,3,24)
     dates = pd.date_range(sd,ed)
     
@@ -30,6 +35,14 @@ if __name__=="__main__":
     prices = get_data(symbols, dates)
     prices = prices.dropna()
     
+    #S&P500 Index
+    SPX = get_data(['SPY'], dates)
+    SPX = SPX.dropna()
+    
+    #Testing and Training
+    X_train, X_test = test_split(prices)
+    SPX_train, SPX_test = test_split(SPX)
+    
     #Initial Allocation
     allocs = np.empty(len(symbols), float)
     allocs.fill(1.0/len(symbols))
@@ -42,11 +55,11 @@ if __name__=="__main__":
 #                       0.2,
 #                       0.12,
 #                       0.02
-#                       ])
+#                       ])    
     
     #Value of Portfolio with no optimization
     naivePortfolio = SRO.SharpeRatioOptimizer()
-    naivePortfolio.getPortStats(allocs, prices, sf=252, sv=10000)
+    naivePortfolio.getPortStats(allocs, X_test, sf=252, sv=10000)
     
     print '---No Opt---\n'
     print 'Cumulative Return: ', naivePortfolio.cr, '\n'
@@ -59,8 +72,8 @@ if __name__=="__main__":
     
     #Value With Optimization for CR
     optPortolioCR = SRO.SharpeRatioOptimizer()
-    optPortCR = optPortolioCR.optimize_cr(prices, sf=252)
-    optPortolioCR.getPortStats(optPortCR, prices, sf=252, sv=10000)
+    optPortCR = optPortolioCR.optimize_cr(X_train, sf=252)
+    optPortolioCR.getPortStats(optPortCR, X_test, sf=252, sv=10000)
 
     print '---CR Opt---\n'
     print 'Cumulative Return: ', optPortolioCR.cr, '\n'
@@ -75,8 +88,8 @@ if __name__=="__main__":
     
     #Value With Optimization for Sharpe
     optPortolioSR = SRO.SharpeRatioOptimizer()
-    optPortSharpe = optPortolioSR.optimize_sharpe(prices, sf=252)
-    optPortolioSR.getPortStats(optPortSharpe, prices, sf=252, sv=10000)
+    optPortSharpe = optPortolioSR.optimize_sharpe(X_train, sf=252)
+    optPortolioSR.getPortStats(optPortSharpe, X_test, sf=252, sv=10000)
 
     print '---Sharpe Opt---\n'
     print 'Cumulative Return: ', optPortolioSR.cr, '\n'
@@ -85,6 +98,26 @@ if __name__=="__main__":
     print 'Sharpe Ratio: ', optPortolioSR.sr, '\n'
     print 'Port Value: ', optPortolioSR.port_val, '\n'
     print np.round(optPortSharpe, decimals=2)
+    print '\n'
+    
+    optimalSharpe = optPortolioSR.port_val[-1]
+    
+    
+    #S&P500 Baseline
+    
+    #Initial Allocation
+    allocs = np.empty(1, float)
+    allocs.fill(1.0/1.0)
+    
+    SPPortfolio = SRO.SharpeRatioOptimizer()
+    SPPortfolio.getPortStats(allocs, SPX_test, sf=252, sv=10000)
+
+    print '---S&P 500 Baseline---\n'
+    print 'Cumulative Return: ', SPPortfolio.cr, '\n'
+    print 'Avg Period Return: ', SPPortfolio.apr, '\n'
+    print 'STD Period Return: ', SPPortfolio.sdpr, '\n'
+    print 'Sharpe Ratio: ', SPPortfolio.sr, '\n'
+    print 'Port Value: ', SPPortfolio.port_val, '\n'
     print '\n'
     
     optimalSharpe = optPortolioSR.port_val[-1]

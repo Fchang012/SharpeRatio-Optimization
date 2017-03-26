@@ -16,7 +16,8 @@ ticker = c('VGSTX',
            'PRGFX',
            'PRMTX',
            'PRGTX',
-           'TRSGX')
+           'TRSGX',
+           'SPY')
 
 # Get stock info
 for (i in 1:length(ticker)){
