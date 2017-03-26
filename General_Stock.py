@@ -15,7 +15,7 @@ from read_CSV import get_data
 if __name__=="__main__":
     
     #Setting Dates
-    sd=dt.datetime(2010,1,1)
+    sd=dt.datetime(2005,1,1)
     ed=dt.datetime(2017,3,24)
     dates = pd.date_range(sd,ed)
     
@@ -58,31 +58,33 @@ if __name__=="__main__":
     naive = naivePortfolio.port_val[-1]
     
     #Value With Optimization for CR
-    optPortCR = naivePortfolio.optimize_cr(prices, sf=252)
-    naivePortfolio.getPortStats(optPortCR, prices, sf=252, sv=10000)
+    optPortolioCR = SRO.SharpeRatioOptimizer()
+    optPortCR = optPortolioCR.optimize_cr(prices, sf=252)
+    optPortolioCR.getPortStats(optPortCR, prices, sf=252, sv=10000)
 
     print '---CR Opt---\n'
-    print 'Cumulative Return: ', naivePortfolio.cr, '\n'
-    print 'Avg Period Return: ', naivePortfolio.apr, '\n'
-    print 'STD Period Return: ', naivePortfolio.sdpr, '\n'
-    print 'Sharpe Ratio: ', naivePortfolio.sr, '\n'
-    print 'Port Value: ', naivePortfolio.port_val, '\n'
+    print 'Cumulative Return: ', optPortolioCR.cr, '\n'
+    print 'Avg Period Return: ', optPortolioCR.apr, '\n'
+    print 'STD Period Return: ', optPortolioCR.sdpr, '\n'
+    print 'Sharpe Ratio: ', optPortolioCR.sr, '\n'
+    print 'Port Value: ', optPortolioCR.port_val, '\n'
     print np.round(optPortCR, decimals=2)
     print '\n'
     
-    optimalCR = naivePortfolio.port_val[-1]
+    optimalCR = optPortolioCR.port_val[-1]
     
     #Value With Optimization for Sharpe
-    optPortSharpe = naivePortfolio.optimize_sharpe(prices, sf=252)
-    naivePortfolio.getPortStats(optPortSharpe, prices, sf=252, sv=10000)
+    optPortolioSR = SRO.SharpeRatioOptimizer()
+    optPortSharpe = optPortolioSR.optimize_sharpe(prices, sf=252)
+    optPortolioSR.getPortStats(optPortSharpe, prices, sf=252, sv=10000)
 
     print '---Sharpe Opt---\n'
-    print 'Cumulative Return: ', naivePortfolio.cr, '\n'
-    print 'Avg Period Return: ', naivePortfolio.apr, '\n'
-    print 'STD Period Return: ', naivePortfolio.sdpr, '\n'
-    print 'Sharpe Ratio: ', naivePortfolio.sr, '\n'
-    print 'Port Value: ', naivePortfolio.port_val, '\n'
+    print 'Cumulative Return: ', optPortolioSR.cr, '\n'
+    print 'Avg Period Return: ', optPortolioSR.apr, '\n'
+    print 'STD Period Return: ', optPortolioSR.sdpr, '\n'
+    print 'Sharpe Ratio: ', optPortolioSR.sr, '\n'
+    print 'Port Value: ', optPortolioSR.port_val, '\n'
     print np.round(optPortSharpe, decimals=2)
     print '\n'
     
-    optimalSharpe = naivePortfolio.port_val[-1]
+    optimalSharpe = optPortolioSR.port_val[-1]
