@@ -12,7 +12,7 @@ import numpy as np
 import SharpeRatioOptimizer as SRO
 from read_CSV import get_data
 
-def test_split(df, percent=0.6):
+def test_split(df, percent=0.9):
     train = df.ix[0:int(np.round(prices.shape[0]*percent)), :]
     test = df.ix[int(np.round(prices.shape[0]*percent)): , :]
     return train, test
@@ -20,16 +20,16 @@ def test_split(df, percent=0.6):
 if __name__=="__main__":
     
     #Setting Dates
-    sd=dt.datetime(2008,1,1)
+    sd=dt.datetime(2007,1,1)
     ed=dt.datetime(2017,3,24)
     dates = pd.date_range(sd,ed)
     
     #Symbols    
-    symbols = ['PRGFX',
+    symbols = ['VGSTX',
                'PRGTX',
+               'PRGFX',
                'PRMTX',
-               'TRSGX',
-               'VGSTX'
+               'TRSGX'
                ]
                
     prices = get_data(symbols, dates)
@@ -43,19 +43,16 @@ if __name__=="__main__":
     X_train, X_test = test_split(prices)
     SPX_train, SPX_test = test_split(SPX)
     
-    #Initial Allocation
-    allocs = np.empty(len(symbols), float)
-    allocs.fill(1.0/len(symbols))
+#    #Initial Allocation
+#    allocs = np.empty(len(symbols), float)
+#    allocs.fill(1.0/len(symbols))
     
-#    allocs = np.array([0.22,
-#                       0.11,
-#                       0.1,
-#                       0.1,
-#                       0.13,
-#                       0.2,
-#                       0.12,
-#                       0.02
-#                       ])    
+    allocs = np.array([0.41,
+                       0.16,
+                       0.14,
+                       0.15,
+                       0.14
+                       ])    
     
     #Value of Portfolio with no optimization
     naivePortfolio = SRO.SharpeRatioOptimizer()
