@@ -20,8 +20,8 @@ def test_split(df, percent=0.9):
 if __name__=="__main__":
     
     #Setting Dates
-    sd=dt.datetime(2007,1,1)
-    ed=dt.datetime(2017,3,24)
+    sd=dt.datetime(2010,1,1)
+    ed=dt.datetime(2017,3,28)
     dates = pd.date_range(sd,ed)
     
     #Symbols    
@@ -29,7 +29,8 @@ if __name__=="__main__":
                'PRGTX',
                'PRGFX',
                'PRMTX',
-               'TRSGX'
+               'TRSGX',
+               'PRISX',
                ]
                
     prices = get_data(symbols, dates)
@@ -44,15 +45,15 @@ if __name__=="__main__":
     SPX_train, SPX_test = test_split(SPX)
     
 #    #Initial Allocation
-#    allocs = np.empty(len(symbols), float)
-#    allocs.fill(1.0/len(symbols))
+    allocs = np.empty(len(symbols), float)
+    allocs.fill(1.0/len(symbols))
     
-    allocs = np.array([0.41,
-                       0.16,
-                       0.14,
-                       0.15,
-                       0.14
-                       ])    
+#    allocs = np.array([0.41,
+#                       0.16,
+#                       0.14,
+#                       0.15,
+#                       0.14
+#                       ])    
     
     #Value of Portfolio with no optimization
     naivePortfolio = SRO.SharpeRatioOptimizer()

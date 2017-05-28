@@ -15,13 +15,13 @@ ticker = c('VGSTX',
            'PRGTX',
            'PRGFX',
            'PRMTX',
-           'PRGTX',
            'TRSGX',
+           'PRISX',
            'SPY')
 
 # Get stock info
 for (i in 1:length(ticker)){
-  tickerList[[i]] <- getSymbols(ticker[i], from = as.Date("2005-01-01"), auto.assign = FALSE)
+  tickerList[[i]] <- getSymbols(ticker[i], from = as.Date("2005-01-01"), auto.assign = FALSE, src='google')
 }
 
 # Write them to CSV files
