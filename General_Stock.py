@@ -20,18 +20,17 @@ def test_split(df, percent=0.9):
 if __name__=="__main__":
     
     #Setting Dates
-    sd=dt.datetime(2010,1,1)
-    ed=dt.datetime(2017,3,28)
+    sd=dt.datetime(2005,1,1)
+    ed=dt.datetime(2017,5,29)
     dates = pd.date_range(sd,ed)
     
     #Symbols    
-    symbols = ['VGSTX',
-               'PRGTX',
-               'PRGFX',
-               'PRMTX',
-               'TRSGX',
-               'PRISX',
-               ]
+    symbols = ['PRHSX',
+               'PRDSX',
+               'TRBCX',
+               'TRPBX',
+               'PRIDX',
+               'PRGTX']
                
     prices = get_data(symbols, dates)
     prices = prices.dropna()
