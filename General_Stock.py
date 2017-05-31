@@ -35,6 +35,12 @@ if __name__=="__main__":
     prices = get_data(symbols, dates)
     prices = prices.dropna()
     
+    # Drop stupid null retarded
+    findNull = prices[prices['PRHSX'].str.contains("null")].index
+    # Change to Numeric
+    prices = prices.drop(findNull)
+    prices = prices.apply(pd.to_numeric)
+    
     #S&P500 Index
     SPX = get_data(['SPY'], dates)
     SPX = SPX.dropna()
