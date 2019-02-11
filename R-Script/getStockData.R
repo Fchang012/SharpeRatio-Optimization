@@ -32,7 +32,7 @@ for (j in 1:length(tickerList)){
   colnames(tickerList[[j]])[3] <- "Low"
   colnames(tickerList[[j]])[4] <- "Close"
   colnames(tickerList[[j]])[5] <- "Volume"
-  colnames(tickerList[[j]])[6] <- "Adjusted"
+  colnames(tickerList[[j]])[6] <- "Adj Close"
   
   #Change to DF
   tempDF <- data.frame(Date=index(tickerList[[j]]), coredata(tickerList[[j]]))
